@@ -200,9 +200,14 @@ def setLevel(percentage, rate = null) {
 	} else {
 		rate = 1000*rate.toInteger()
 	}
-	sendCmd("""{"${service()}":""" +
+	// If transitioning to 0, then switch off the bulb
+	if(percentage == 0) {
+        	off()
+    	} else {
+		sendCmd("""{"${service()}":""" +
 			"""{"${method()}":{"ignore_default":1,"on_off":1,""" +
 			""""brightness":${percentage},"transition_period":${rate}}}}""")
+    	}
 }
 def startLevelChange(direction) {
 	logDebug("startLevelChange: direction = ${direction}")
